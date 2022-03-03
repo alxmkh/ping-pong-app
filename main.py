@@ -9,7 +9,7 @@ origins = [
     "0.0.0.0:4001/ping-pong"
 ]
 
-app = FastAPI()
+app = FastAPI(title='ping-pong-app')
 
 app.add_middleware(
     CORSMiddleware,

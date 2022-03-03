@@ -1,8 +1,6 @@
 FROM python:3.10.1-alpine
 
-RUN mkdir -p /ping-pong-app
-
-RUN /usr/local/bin/python -m pip install --upgrade pip && pip install pipenv
+RUN mkdir -p /ping-pong-app && /usr/local/bin/python -m pip install --upgrade pip && pip install pipenv
 
 ENV PROJECT_DIR /ping-pong-app
 

@@ -7,7 +7,7 @@ spec:
   selector:
     app: ping-pong-app
   ports:
-    - port: 6789
+    - port: 4001
       protocol: TCP
       targetPort: 4001
       name: ping-pong-app-port

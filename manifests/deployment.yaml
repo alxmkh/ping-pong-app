@@ -12,6 +12,13 @@ spec:
       labels:
         app: ping-pong-app
     spec:
+      volumes:
+        - name: shared-folder
+          persistentVolumeClaim:
+            claimName: cluster-share
       containers:
       - name: ping-pong-app
-        image: isalxmkh/ping-pong-app:v1.01
+        image: isalxmkh/ping-pong-app:v2.01
+        volumeMounts:
+          - name: shared-folder
+            mountPath: /usr/src/app/files/
