@@ -18,7 +18,7 @@ Dockerfile
 # Byte-compiled / optimized / DLL files
 **/__pycache__/
 **/*.py[cod]
-
+*.db
 # C extensions
 *.so
 
@@ -87,3 +87,7 @@ venv/
 
 # VS Code
 .vscode/
+
+# Manifest
+manifests
+old_manifests

@@ -1,6 +1,9 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from api import api
+from dotenv import load_dotenv
+
+load_dotenv()
 
 origins = [
     "http://localhost:4001/ping-pong",

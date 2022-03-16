@@ -1,0 +1,8 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: postgres-config-map
+  namespace: practice-dwk
+data:
+  pg_user: admin
+  db_name: ppdb

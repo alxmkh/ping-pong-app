@@ -19,7 +19,25 @@ spec:
             claimName: cluster-share
       containers:
       - name: ping-pong-app
-        image: isalxmkh/ping-pong-app:v2.07
+        image: isalxmkh/ping-pong-app:v2.13
+        env:
+          - name: POSTGRES_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: pg-secret
+                key: PASSWORD
+          - name: POSTGRES_USER
+            valueFrom:
+              configMapKeyRef:
+                name: postgres-config-map
+                key: pg_user
+          - name: POSTGRES_DB
+            valueFrom:
+              configMapKeyRef:
+                name: postgres-config-map
+                key: db_name
+          - name: DATABASE_URL
+            value: postgresql://$(POSTGRES_USER):$(POSTGRES_PASSWORD)@postgres-svc/$(POSTGRES_DB)
         volumeMounts:
           - name: shared-folder
             mountPath: /usr/src/app/files/

@@ -1,7 +1,11 @@
-from fastapi import APIRouter, HTTPException
+from fastapi import APIRouter, HTTPException, Depends
 import asyncio
 import os
 from dotenv import load_dotenv
+from sqlalchemy.orm import Session
+
+from databases import models, crud, schemas
+from databases.database import SessionLocal, engine
 
 load_dotenv()
 
@@ -9,6 +13,16 @@ router = APIRouter()
 
 ping_pong_counter: int = 0
 lock = asyncio.Lock()
+
+models.Base.metadata.create_all(bind=engine)
+
+
+def get_db():
+    db = SessionLocal()
+    try:
+        yield db
+    finally:
+        db.close()
 
 
 @router.get('/pp-get-data-from-file', tags=['ping-pong'])
@@ -25,11 +39,15 @@ async def get_ping_counter_from_file() -> dict | Exception:
 
 
 @router.get('/pp-get-data-from-rest', tags=['ping-pong'])
-async def get_ping_counter_from_rest() -> dict | Exception:
+async def get_ping_counter_from_rest(db: Session = Depends(get_db)) -> dict | Exception:
     try:
-        global ping_pong_counter
-        async with lock:
-            ping_pong_counter += 1
-        return {"pong": ping_pong_counter}
+        flag = crud.get_current_counter(db)
+        if not flag:
+            crud.insert_counter(db)
+        current_count_value = crud.increment_counter(db)
+        # global ping_pong_counter
+        # async with lock:
+        #     ping_pong_counter += 1
+        return {"pong": current_count_value.ping_counter}
     except Exception as err:
         raise HTTPException(status_code=400, detail=str(err))
