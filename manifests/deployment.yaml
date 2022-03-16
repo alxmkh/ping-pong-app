@@ -19,7 +19,7 @@ spec:
             claimName: cluster-share
       containers:
       - name: ping-pong-app
-        image: isalxmkh/ping-pong-app:v2.13
+        image: isalxmkh/ping-pong-app:v2.14
         env:
           - name: POSTGRES_PASSWORD
             valueFrom:
