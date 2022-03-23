@@ -19,7 +19,12 @@ spec:
             claimName: cluster-share
       containers:
       - name: ping-pong-app
-        image: isalxmkh/ping-pong-app:v2.14
+        image: isalxmkh/ping-pong-app:v2.16
+        readinessProbe:
+          initialDelaySeconds: 10
+          httpGet:
+            path: /health-db
+            port: 4001
         env:
           - name: POSTGRES_PASSWORD
             valueFrom:

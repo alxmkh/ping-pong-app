@@ -20,3 +20,7 @@ def insert_counter(db: Session):
     db.commit()
     db.refresh(db_item)
     return db_item
+
+
+def database_health_check(db: Session):
+    return db.execute("SELECT 'OK'").first()

@@ -45,9 +45,23 @@ async def get_ping_counter_from_rest(db: Session = Depends(get_db)) -> dict | Ex
         if not flag:
             crud.insert_counter(db)
         current_count_value = crud.increment_counter(db)
-        # global ping_pong_counter
-        # async with lock:
-        #     ping_pong_counter += 1
         return {"pong": current_count_value.ping_counter}
     except Exception as err:
         raise HTTPException(status_code=400, detail=str(err))
+
+
+@router.get('/health-db', tags=['health_checks'])
+async def get_database_health_check(db: Session = Depends(get_db)) -> dict[str] | Exception:
+    try:
+        health_check_result = crud.database_health_check(db)
+    except Exception as err:
+        raise HTTPException(status_code=500, detail=str(err))
+    if health_check_result[0] == 'OK':
+        return {"check_database_connection": health_check_result[0]}
+    else:
+        raise HTTPException(status_code=503, detail='Database unavailable')
+
+
+@router.get('/health-app', tags=['health_checks'])
+async def get_app_health_check() -> dict:
+    return {"check_app_connection": "OK"}
